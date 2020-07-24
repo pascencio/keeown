@@ -1,3 +1,3 @@
 #!/bin/sh
-sh build.sh &
+./build.sh &
 bin/keeown
