@@ -1,1 +1,1 @@
-web: bin/start-nginx bundle exec ./shell/start.sh
+web: bin/start-nginx bundle ./shell/start.sh
