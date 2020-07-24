@@ -12,7 +12,7 @@ services:
     build:
       context: ./env/golang
     volumes:
-      - ./src/api:/go/src/api
+      - ./:/go/src/api
       - tmp-uds:/tmp
     command: ["go", "run", "main.go"]
   ui:

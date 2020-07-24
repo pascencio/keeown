@@ -1,7 +1,7 @@
 build:
   languages:
     - go
-    - node
+    -
 
 run:
   web: bin/start-nginx shell/start.sh
