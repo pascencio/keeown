@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  app:
+    build:
+      context: ./env/nginx
+    ports:
+      - 8080:8080
+    volumes:
+      - tmp-uds:/tmp
+  api:
+    build:
+      context: ./env/golang
+    volumes:
+      - ./src/api:/go/src/api
+      - tmp-uds:/tmp
+    command: ["go", "run", "main.go"]
+  ui:
+    build:
+      context: ./env/node
+    volumes:
+      - ./src/ui:/home/node/ui
+    command: ["yarn", "serve"]
+volumes:
+  tmp-uds:
