@@ -1,1 +1,1 @@
-web: bin/start-nginx bundle exec bin/keeown
+web: bin/start-nginx bundle exec ./shell/start.sh

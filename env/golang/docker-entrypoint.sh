@@ -2,18 +2,26 @@
 nginxSocket="/tmp/nginx.socket"
 command=$@
 socketPid=-1
+maxRetry=10
 log(){
     now=$(date +"%Y-%d-%m %H:%M:%S")
     echo "[INFO]:[${now}] - ${1}"
 }
 socketChmod(){
     log " #### Waiting $nginxSocket file exist"
-    while [ ! -S $nginxSocket ];
+    retry=0
+    while [ ! -S $nginxSocket ] && [ $retry -lt $maxRetry ];
     do
         sleep 1
+        ((retry++))
     done
-    chmod 777 $nginxSocket
-    log " #### Permissions of $nginxSocket file changed"
+    if [ -S $nginxSocket ];
+    then
+        chmod 777 $nginxSocket
+        log " #### Permissions of $nginxSocket file changed"
+    else
+        log "  #### Wait retries exceeded"
+    fi
 }
 socketStart(){
     exec $command &

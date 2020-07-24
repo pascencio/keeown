@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net"
@@ -11,12 +12,21 @@ import (
 	"time"
 )
 
+type credential struct {
+	Name   string `json:"name"`
+	Secret string `json:"secret"`
+}
+
 const nginxSocket = "/tmp/nginx.socket"
 const appInitializedFile = "/tmp/app-initialized"
 
 func homePage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome to the HomePage Again!")
 	fmt.Println("Endpoint Hit: homePage")
+	c := credential{
+		Name:   "My user",
+		Secret: "S3cret",
+	}
+	json.NewEncoder(w).Encode(c)
 }
 
 func serve(ctx context.Context) (e error) {
