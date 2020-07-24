@@ -1,5 +1,5 @@
 #!/bin/sh
-go build -o ../bin/keeown -v ../src/api
+go build -o ./bin/keeown -v ../src/api
 if [ ! -f ~/.bashrc ];
 then
     touch ~/.bashrc
@@ -13,5 +13,5 @@ source ~/.bashrc
 cd src/ui
 npm install
 npm run build
-cd ../..
+cd ~
 ./bin/keeown
