@@ -1,33 +1,53 @@
 #!/bin/bash
-nginx_socket="/tmp/nginx.socket"
+nginxSocket="/tmp/nginx.socket"
+command=$@
+socketPid=-1
 log(){
     now=$(date +"%Y-%d-%m %H:%M:%S")
     echo "[INFO]:[${now}] - ${1}"
 }
-change_socket_permissions(){
-    echo "Waiting ${nginx_socket} file exist"
-    while [ ! -S ${nginx_socket} ];
+socketChmod(){
+    log " #### Waiting $nginxSocket file exist"
+    while [ ! -S $nginxSocket ];
     do
         sleep 1
     done
-    chmod 777 ${nginx_socket}
-    echo "Permissions of ${nginx_socket} file changed"
+    chmod 777 $nginxSocket
+    log " #### Permissions of $nginxSocket file changed"
 }
-start_app(){
-    exec $@
+socketStart(){
+    exec $command &
+    socketPid=$!
 }
-change_socket_permissions &
+socketStop(){
+    kill -2 $socketPid
+    rm -f $nginxSocket
+    socketPid=-1
+}
+start(){
+    log " #### Executing command: $@"
+    socketChmod &
+    exec $command
+}
+startAndWatch(){
+    socketStart
+    socketChmod
+    log " #### Waiting for new changes"
+    while inotifywait -r -e modify /go/src/api ; do
+        log " #### Changes detected!"
+        socketStop
+        socketStart
+        socketChmod
+        log " #### Waiting for new changes"
+    done
+}
+if [ -S $nginxSocket ];
+then
+    rm -f $nginxSocket
+fi
 if [ ! -d /go/src/api ];
 then
-    log "Executing command: $@"
-    
-    exit 0
+    start
+else
+    startAndWatch
 fi
-start_app &
-log "#### Waiting for new changes"
-while inotifywait -r -e modify /go/src/api ; do
-    log "#### Changes detected!"
-    change_socket_permissions &
-    start_app &
-    log "#### Waiting for new changes"
-done
