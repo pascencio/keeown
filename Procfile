@@ -1,1 +1,1 @@
-web: bin/start-nginx bin/api
+web: bin/start-nginx bin/keeown-api
