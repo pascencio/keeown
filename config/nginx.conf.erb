@@ -36,7 +36,7 @@ http {
 		keepalive_timeout 5;
 
 		location / {
-			root   /tmp/ui/dist;
+			root   /tmp/dist;
 			index  index.html;
 			try_files $uri $uri/ /index.html;
 		}
