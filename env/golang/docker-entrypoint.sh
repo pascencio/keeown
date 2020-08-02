@@ -1,5 +1,6 @@
 #!/bin/bash
 nginxSocket="/tmp/nginx.socket"
+app="/go/src/keeown-api"
 command=$@
 socketPid=-1
 maxRetry=10
@@ -41,7 +42,7 @@ startAndWatch(){
     socketStart
     socketChmod
     log " #### Waiting for new changes"
-    while inotifywait -r -e modify /go/src/api ; do
+    while inotifywait -r -e modify $app ; do
         log " #### Changes detected!"
         socketStop
         socketStart
@@ -53,7 +54,7 @@ if [ -S $nginxSocket ];
 then
     rm -f $nginxSocket
 fi
-if [ ! -d /go/src/api ];
+if [ ! -d $app ];
 then
     start
 else

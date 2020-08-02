@@ -1,3 +1,6 @@
 [submodule "src/keeown-api"]
 	path = src/keeown-api
 	url = https://github.com/pascencio/keeown-api.git
+[submodule "src/keeown-ui"]
+	path = src/keeown-ui
+	url = https://github.com/pascencio/keeown-ui.git

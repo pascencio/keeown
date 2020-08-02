@@ -12,14 +12,14 @@ services:
     build:
       context: ./env/golang
     volumes:
-      - ./:/go/src/api
+      - ./src/keeown-api:/go/src/keeown-api
       - tmp-uds:/tmp
     command: ["go", "run", "main.go"]
   ui:
     build:
       context: ./env/node
     volumes:
-      - ./src/ui:/home/node/ui
+      - ./src/keeown-ui:/home/node/ui
     command: ["yarn", "serve"]
 volumes:
   tmp-uds:
