@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "src/keeown-api"
+		},
+		{
+			"path": "../heroku-buildpack-js-dist"
 		}
 	],
 	"settings": {}
